@@ -1,0 +1,20 @@
+{
+  "activeId": "deepseek-default",
+  "providers": [
+    {
+      "id": "deepseek-default",
+      "name": "DeepSeek",
+      "apiKey": "sk-your-deepseek-api-key-here",
+      "baseUrl": "https://api.deepseek.com",
+      "apiFormat": "openai",
+      "models": {
+        "opus": "deepseek-v4-pro",
+        "sonnet": "deepseek-v4-pro",
+        "haiku": "deepseek-v4-flash",
+        "default": "sonnet"
+      },
+      "runtimeKind": "deepseek"
+    }
+  ],
+  "schemaVersion": 1
+}

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprout - 学习成长智能体</title>
+  <link rel="stylesheet" href="assets/style.css?v=4.0.0">
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">🌱</span>
+          <span class="logo-text">Sprout</span>
+        </div>
+        <button id="new-chat-btn" class="btn-icon" title="新对话">+</button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="chat"><span class="nav-icon">💬</span><span class="nav-label">对话</span></button>
+        <button class="nav-item" data-view="skills"><span class="nav-icon">⚡</span><span class="nav-label">技能</span></button>
+        <button class="nav-item" data-view="memory"><span class="nav-icon">🧠</span><span class="nav-label">记忆</span></button>
+        <button class="nav-item" data-view="tasks"><span class="nav-icon">⏰</span><span class="nav-label">任务</span></button>
+        <button class="nav-item" data-view="settings"><span class="nav-icon">⚙️</span><span class="nav-label">设置</span></button>
+      </nav>
+
+      <div class="conversation-section">
+        <div class="conversation-list-title">历史对话</div>
+        <div class="conversation-list" id="conversation-list"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button id="btn-theme-toggle" class="btn-icon" title="切换主题">🌓</button>
+        <div class="status-indicator" id="connection-status">
+          <span class="status-dot disconnected"></span>
+          <span class="status-text">未连接</span>
+        </div>
+      </div>
+    </aside>
+
+    <main id="main-content">
+      <!-- 对话视图 -->
+      <div id="view-chat" class="view active">
+        <div class="chat-header">
+          <h2>Sprout Assistant</h2>
+          <div class="chat-header-actions">
+            <select id="provider-select" class="provider-select" title="切换模型商"><option value="">模型商</option></select>
+            <select id="tier-select" class="tier-select" title="切换模型等级"><option value="">等级</option></select>
+            <select id="permission-select" class="permission-select" title="权限模式">
+              <option value="full">完全权限</option>
+              <option value="ask" selected>询问权限</option>
+              <option value="safe">安全模式</option>
+            </select>
+            <button class="btn-icon" id="btn-clear" title="清除对话">🗑️</button>
+          </div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="welcome-message">
+            <div class="welcome-icon">🌱</div>
+            <h3>欢迎使用 Sprout</h3>
+            <p>我是你的学习成长助手，可以帮你：</p>
+            <div class="capability-cards">
+              <div class="cap-card">📑 <span>找论文</span></div>
+              <div class="cap-card">📝 <span>读文献</span></div>
+              <div class="cap-card">✏️ <span>出题练习</span></div>
+              <div class="cap-card">🧠 <span>知识卡片</span></div>
+              <div class="cap-card">🔍 <span>知识检索</span></div>
+              <div class="cap-card">🗺️ <span>知识地图</span></div>
+            </div>
+            <div class="quick-actions">
+              <button class="quick-btn" data-msg="你有哪些技能？">⚡ 查看技能</button>
+              <button class="quick-btn" data-msg="帮我找最新的 AI 论文">📑 找论文</button>
+              <button class="quick-btn" data-msg="帮我生成今天的学习报告">📝 学习报告</button>
+              <button class="quick-btn" data-msg="搜索最新的AI新闻">🌐 联网搜索</button>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <div class="attachments-preview" id="attachments-preview" style="display:none;"></div>
+          <div class="input-wrapper">
+            <button class="btn-attach" id="btn-attach" title="附加文件">📎</button>
+            <input type="file" id="file-input" multiple style="display:none;">
+            <button class="btn-workdir" id="btn-workdir-select" title="设置工作目录">📁</button>
+            <textarea id="chat-input" placeholder="输入你的需求... (Enter 发送)" rows="1"></textarea>
+            <button id="btn-stop" class="btn-stop" title="停止生成" style="display:none;">⏹</button>
+            <button id="btn-send" class="btn-send" title="发送"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 技能视图 -->
+      <div id="view-skills" class="view">
+        <div class="panel-header"><h2>⚡ 技能面板</h2></div>
+        <div class="panel-content"><div id="skills-list" class="cards-grid"></div></div>
+      </div>
+
+      <!-- 记忆视图 -->
+      <div id="view-memory" class="view">
+        <div class="panel-header"><h2>🧠 记忆管理</h2></div>
+        <div class="panel-content">
+          <div class="memory-tabs">
+            <button class="tab-btn active" data-tab="identity">身份</button>
+            <button class="tab-btn" data-tab="soul">性格</button>
+            <button class="tab-btn" data-tab="user">用户</button>
+            <button class="tab-btn" data-tab="memory">长期记忆</button>
+          </div>
+          <div class="memory-editor">
+            <textarea id="memory-editor" class="editor-textarea" spellcheck="false"></textarea>
+            <button class="btn-primary" id="btn-save-memory">💾 保存</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 任务视图 -->
+      <div id="view-tasks" class="view">
+        <div class="panel-header">
+          <h2>⏰ 定时任务</h2>
+          <button class="btn-primary" id="btn-add-task">+ 新建任务</button>
+        </div>
+        <div class="panel-content">
+          <div class="settings-section">
+            <h3>我的任务</h3>
+            <div id="user-tasks-list" class="task-list"></div>
+          </div>
+          <div class="settings-section">
+            <h3>系统任务（只读）</h3>
+            <div id="tasks-list" class="task-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 设置视图 -->
+      <div id="view-settings" class="view">
+        <div class="panel-header"><h2>⚙️ 系统设置</h2></div>
+        <div class="panel-content">
+          <div class="settings-section">
+            <h3>模型 / Provider</h3>
+            <div class="setting-item"><label>当前模型</label><span id="setting-model">-</span></div>
+            <div class="setting-item"><label>权限模式</label><span id="setting-permission">-</span></div>
+          </div>
+          <div class="settings-section"><h3>工具列表</h3><div id="tools-list" class="tools-grid"></div></div>
+          <div class="settings-section">
+            <h3>工作目录</h3>
+            <div class="setting-item">
+              <input type="text" id="workdir-input" placeholder="设置工作目录路径...">
+              <button class="btn-secondary" id="btn-set-workdir">设置</button>
+            </div>
+          </div>
+          <div class="settings-section">
+            <h3>Provider 管理</h3>
+            <div id="provider-list" class="provider-list"></div>
+            <button class="btn-primary" id="btn-add-provider" style="margin-top:12px;">+ 添加 Provider</button>
+          </div>
+          <div class="settings-section">
+            <h3>关于</h3>
+            <div id="about-info" class="about-box">
+              <div class="about-item"><span class="about-label">项目</span><span class="about-value" id="about-name">-</span></div>
+              <div class="about-item"><span class="about-label">版本</span><span class="about-value" id="about-version">-</span></div>
+              <div class="about-item"><span class="about-label">开发者</span><span class="about-value" id="about-author" style="color:var(--accent);font-weight:600;">-</span></div>
+            </div>
+          </div>
+          <div class="settings-section">
+            <h3>连接信息</h3>
+            <div class="setting-item"><label>API</label><span>http://127.0.0.1:8008</span></div>
+            <div class="setting-item"><label>WebSocket</label><span>ws://127.0.0.1:8008/ws/chat</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Provider Modal -->
+      <div class="modal-overlay" id="provider-modal" style="display:none;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="provider-modal-title">添加 Provider</h3>
+            <button class="btn-icon" id="btn-close-provider-modal">✕</button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="provider-edit-id">
+            <div class="form-group"><label>名称</label><input type="text" id="provider-name" placeholder="如 DeepSeek, Zhipu GLM"></div>
+            <div class="form-group"><label>API Key</label><input type="password" id="provider-apikey" placeholder="sk-xxx..."></div>
+            <div class="form-group"><label>Base URL</label><input type="text" id="provider-baseurl" placeholder="https://api.deepseek.com"></div>
+            <div class="form-group"><label>API 格式</label>
+              <select id="provider-format"><option value="openai">OpenAI 兼容</option><option value="anthropic">Anthropic 兼容</option></select>
+            </div>
+            <div class="form-group"><label>运行时类型</label>
+              <select id="provider-runtime"><option value="deepseek">DeepSeek</option><option value="qwen">Qwen / 通义</option><option value="openai_compatible">OpenAI 兼容</option></select>
+            </div>
+            <div class="form-group"><label>Opus (旗舰)</label><input type="text" id="provider-opus-model" placeholder="最强模型"></div>
+            <div class="form-group"><label>Sonnet (均衡)</label><input type="text" id="provider-sonnet-model" placeholder="均衡模型"></div>
+            <div class="form-group"><label>Haiku (快速)</label><input type="text" id="provider-haiku-model" placeholder="快速模型"></div>
+            <div class="form-group"><label>默认等级</label>
+              <select id="provider-default-tier"><option value="opus">Opus (最强)</option><option value="sonnet" selected>Sonnet (均衡)</option><option value="haiku">Haiku (快速)</option></select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" id="btn-cancel-provider">取消</button>
+            <button class="btn-primary" id="btn-save-provider">保存</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task Modal -->
+      <div class="modal-overlay" id="task-modal" style="display:none;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="task-modal-title">新建任务</h3>
+            <button class="btn-icon" id="btn-close-task-modal">✕</button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="task-edit-id">
+            <div class="form-group">
+              <label>任务名称</label>
+              <input type="text" id="task-name" placeholder="如 每日学习报告">
+            </div>
+            <div class="form-group">
+              <label>执行动作</label>
+              <select id="task-action">
+                <option value="generate_study_report">生成学习报告</option>
+                <option value="fetch_arxiv">抓取 arXiv 论文</option>
+              </select>
+            </div>
+            <div class="form-group" id="task-params-arxiv" style="display:none;">
+              <label>关键词</label>
+              <input type="text" id="task-arxiv-query" placeholder="如 multi-agent">
+              <label style="margin-top:8px;">抓取数量</label>
+              <input type="number" id="task-arxiv-max" value="5" min="1" max="20">
+              <label style="margin-top:8px;">分类过滤（可选）</label>
+              <input type="text" id="task-arxiv-categories" placeholder="如 cs.AI,cs.CL">
+              <label style="margin-top:8px;">只看最近几天（0 表示不限）</label>
+              <input type="number" id="task-arxiv-lookback" value="0" min="0">
+              <label style="margin-top:8px;">解读深度</label>
+              <select id="task-arxiv-detail">
+                <option value="brief">简要</option>
+                <option value="summary">深入解读</option>
+              </select>
+              <label style="margin-top:8px;">保存抓取结果到本地</label>
+              <input type="checkbox" id="task-arxiv-save" checked>
+              <label style="margin-top:8px;">同时下载论文 PDF</label>
+              <input type="checkbox" id="task-arxiv-download-pdf">
+            </div>
+            <div class="form-group" id="task-params-study" style="display:none;">
+              <label>统计小时数</label>
+              <input type="number" id="task-report-hours" value="24" min="1" max="720">
+            </div>
+            <div class="form-group">
+              <label>频率</label>
+              <select id="task-schedule-type">
+                <option value="daily">每天</option>
+                <option value="weekly">每周</option>
+                <option value="interval">每隔一段时间</option>
+              </select>
+            </div>
+            <div class="form-group" id="task-time-group">
+              <label>触发时间</label>
+              <input type="time" id="task-time" value="20:00">
+            </div>
+            <div class="form-group" id="task-weekday-group" style="display:none;">
+              <label>星期几</label>
+              <select id="task-weekday">
+                <option value="0">周一</option>
+                <option value="1">周二</option>
+                <option value="2">周三</option>
+                <option value="3">周四</option>
+                <option value="4">周五</option>
+                <option value="5">周六</option>
+                <option value="6">周日</option>
+              </select>
+            </div>
+            <div class="form-group" id="task-interval-group" style="display:none;">
+              <label>间隔（分钟）</label>
+              <input type="number" id="task-interval" value="60" min="1">
+            </div>
+            <div class="form-group">
+              <label>启用</label>
+              <input type="checkbox" id="task-enabled" checked>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" id="btn-cancel-task">取消</button>
+            <button class="btn-primary" id="btn-save-task">保存</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill Detail Modal -->
+      <div class="modal-overlay" id="skill-modal" style="display:none;">
+        <div class="modal-content" style="width: 700px;">
+          <div class="modal-header">
+            <h3 id="skill-modal-title">技能详情</h3>
+            <button class="btn-icon" id="btn-close-skill-modal">✕</button>
+          </div>
+          <div class="modal-body">
+            <pre id="skill-modal-content" style="white-space: pre-wrap; word-break: break-word; font-size: 13px; line-height: 1.6; font-family: 'Cascadia Code', 'Fira Code', monospace; color: var(--text-primary); max-height: 60vh; overflow-y: auto; margin: 0;"></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js?v=4.0.0"></script>
+</body>
+</html>

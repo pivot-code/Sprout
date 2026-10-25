@@ -1,0 +1,10 @@
+{
+  "name": "Sprout",
+  "version": "1.2.0",
+  "description": "学习成长智能体 — 基于 LangChain + LangGraph 的个人学习助手",
+  "author": "试验243雷朗睿",
+  "license": "MIT",
+  "repository": "",
+  "created": "2026-10-1",
+  "updated": "2026-10-17"
+}
