@@ -12,7 +12,7 @@
 | 🔧 **工具调用** | 终端操作、Python 代码执行、文件读写、丰富格式文件解析 |
 | 📚 **学术检索** | arXiv 最新论文抓取、PDF 自动下载、全库知识检索 |
 | 📝 **内容消化** | 课堂资料消化、网页链接总结、论文深度解读与多篇对比 |
-| 🧠 **知识管理** | 知识卡片生成、知识地图生成、长期记忆自动提取 |
+| 🧠 **知识管理** | 知识卡片生成、知识地图生成、系统级长期记忆记录 |
 | ⚡ **技能系统** | 可扩展的 SKILL.md 技能（自测出题、作业助手、数据分析等） |
 | ⏰ **定时任务** | 支持配置每日/每周自动抓取文献、生成学习报告，并在通知栏提醒 |
 | 🎨 **生机主题UI** | 现代 Web 界面，提供“生机绿”与“深林色”两套主题 |
@@ -26,6 +26,8 @@
 - **Python 3.10+**
 - **Windows 10/11**（macOS/Linux 亦可，脚本需手动适配）
 - DeepSeek API Key（[免费注册获取](https://platform.deepseek.com/api_keys)）
+
+> **⚠️ 安全警告**：请勿将 `.env` 文件提交到 Git 仓库。项目已包含 `.env.example` 作为配置模板。
 
 ### 一键安装（Windows）
 
@@ -56,7 +58,7 @@ DEEPSEEK_MODEL=deepseek-chat
 双击 start.bat
 ```
 
-浏览器自动打开 **http://127.0.0.1:8000** 即可使用。
+浏览器会自动打开 `http://127.0.0.1:8000`（或你在 `.env` 中配置的 `API_PORT` 端口）即可使用。
 
 ---
 
@@ -128,6 +130,9 @@ Sprout/
     └── ...
 ```
 
+**💡 关于数据目录**：
+项目运行后，会自动在根目录下生成 `courses/`、`papers/`、`cards/`、`sessions/` 等数据归档目录，用于存放用户的课堂笔记、论文解读、知识卡片和对话历史。这些属于用户运行时数据，已在 `.gitignore` 中排除，不会提交到仓库。
+
 ---
 
 ## 核心使用指南
@@ -171,14 +176,14 @@ skills/my_skill/
 
 ## 配置多用户访问
 
-将 `.env` 中的 `API_HOST` 改为 `0.0.0.0`：
+将 `.env` 中的 `API_HOST` 改为 `0.0.0.0`，并确保防火墙允许该端口：
 
 ```ini
 API_HOST=0.0.0.0
 API_PORT=8000
 ```
 
-重启后，局域网内其他电脑可通过 `http://你的IP:8000` 访问。
+重启后，同一局域网内的其他电脑可通过 `http://你的IP:8000` 访问。
 
 ---
 
@@ -217,7 +222,7 @@ API_PORT=8000
 | LLM | DeepSeek / Qwen（通义千问） |
 | 后端 | FastAPI + WebSocket |
 | 前端 | 原生 HTML/CSS/JS（生机绿/深林色主题） |
-| 数据处理 | Pandas + Scikit-learn + Matplotlib + Seaborn |
+| 数据处理 | Pandas + Scikit-learn + Matplotlib + Seaborn（供数据分析技能调用） |
 | 文件解析 | python-docx + PyPDF2 + openpyxl + python-pptx |
 | 学术检索 | arXiv API |
 | 网络搜索 | duckduckgo-search |
