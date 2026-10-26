@@ -89,21 +89,16 @@ Sprout/
 ├── background_loop.py          # 后台定时任务调度器
 ├── memory_manager.py           # 记忆管理器
 ├── skills_scanner.py           # 技能扫描器
-├── providers.json              # 多 Provider 配置
-├── user_tasks.json             # 用户定时任务配置
-├── notifications.json          # 通知记录（用于未读提示）
-├── about.json                  # 项目信息
 ├── requirements.txt            # Python 依赖
 ├── install.bat                 # 一键安装脚本 (Windows)
 ├── start.bat                   # 一键启动脚本 (Windows)
 ├── package.bat                 # 一键打包脚本 (Windows)
 ├── .env.example                # 环境变量模板
-├── tools/                      # 底层工具实现
-│   ├── __init__.py             # 工具注册中心
+│
+├── tools/                      # 底层能力工具集
 │   ├── arxiv_tool.py           # arXiv 抓取与 PDF 下载
 │   ├── paper_tool.py           # 论文深度解读
 │   ├── compare_papers_tool.py  # 论文对比
-│   ├── compare_tool.py         # 概念对比
 │   ├── card_tool.py            # 知识卡片生成
 │   ├── search_tool.py          # 知识库检索
 │   ├── map_tool.py             # 知识地图生成
@@ -111,51 +106,26 @@ Sprout/
 │   ├── report_tool.py          # 学习报告生成
 │   ├── study_tool.py           # 课堂资料消化
 │   ├── web_digest_tool.py      # 网页内容消化
-│   ├── web_search_tool.py      # 联网搜索与抓取
-│   ├── rich_file_tool.py       # PDF/PPT/Word/Excel 解析
-│   ├── read_file_tool.py       # 纯文本文件读取
-│   ├── write_memory_tool.py    # 记忆写入
-│   ├── terminal_tool.py        # 终端命令执行
-│   └── python_repl_tool.py     # Python 代码执行
-├── skills/                     # 技能定义 (SKILL.md)
+│   ├── rich_file_tool.py       # 多格式文档解析 (PDF/PPT/Word等)
+│   └── ...                     # 其他底层工具
+│
+├── skills/                     # Agent 技能定义 (SKILL.md 驱动)
 │   ├── arxiv_search/           # 文献抓取技能
-│   ├── paper_analyzer/         # 论文深度解读技能
-│   ├── paper_compare/          # 论文对比技能
-│   ├── concept_compare/        # 概念对比技能
-│   ├── course_digest/          # 课堂资料消化技能
-│   ├── homework_helper/        # 作业引导助手技能
-│   ├── quiz_generator/         # 自测题生成技能
-│   ├── study_report/           # 学习报告生成技能
-│   ├── knowledge_cards/        # 知识卡片生成技能
-│   ├── knowledge_map/          # 知识地图生成技能
-│   ├── knowledge_search/       # 知识库检索技能
-│   ├── web_digest/             # 网页消化技能
-│   └── data_analysis/          # 数据分析技能
-├── frontend/                   # Web 前端
+│   ├── paper_analyzer/         # 论文解读技能
+│   ├── course_digest/          # 资料消化技能
+│   ├── knowledge_cards/        # 知识卡片技能
+│   └── ...                     # 其他扩展技能
+│
+├── frontend/                   # Web 前端交互界面
 │   ├── index.html              # 页面骨架
 │   └── assets/
 │       ├── app.js              # 前端逻辑
 │       └── style.css           # 生机绿主题样式
-├── sessions/                   # 会话持久化存储
-│   ├── session-xxx.json        # 具体的会话记录
-│   └── notifications.json      # 通知会话记录
-├── courses/                    # 课堂笔记归档（按课程分文件夹）
-├── papers/                     # 论文解读归档（包含 _对比/ 文件夹）
-├── digests/                    # 网页消化归档
-├── cards/                      # 知识卡片归档
-├── comparisons/                # 概念对比归档
-├── maps/                       # 知识地图归档
-├── reports/                    # 学习报告归档
-├── quizzes/                    # 自测题归档
-├── arxiv_papers/               # 抓取的论文原件与元数据
-├── uploads/                    # 用户上传的临时文件
-├── memory/                     # Agent 记忆系统
-│   ├── IDENTITY.md             # 身份设定
-│   ├── SOUL.md                 # 性格特征
-│   ├── USER.md                 # 用户档案
-│   ├── MEMORY.md               # 长期记忆
-│   └── logs/                   # 对话历史日志 (jsonl)
-└── analysis/                   # 数据分析技能的输出产物
+│
+└── memory/                     # Agent 长期记忆与身份设定
+    ├── IDENTITY.md             # 身份设定
+    ├── SOUL.md                 # 性格特征
+    └── ...
 ```
 
 ---
