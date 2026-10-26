@@ -1,0 +1,29 @@
+# 虚拟环境
+.venv/
+
+# 环境变量与密钥
+.env
+providers.json
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+
+# 运行时数据与生成产物（不传用户隐私）
+sessions/
+uploads/
+courses/
+papers/
+digests/
+cards/
+comparisons/
+maps/
+reports/
+quizzes/
+arxiv_papers/
+analysis/
+memory/logs/
+
+# 系统文件
+.DS_Store
+Thumbs.db
